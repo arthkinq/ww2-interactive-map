@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ВМВ: Хроники и Связи</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=EB+Garamond:wght@400;700&family=Anonymous+Pro:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="timeline-controls-container">
+        <div class="date-selector-group">
+            <label for="year-select">Год:</label>
+            <select id="year-select"></select>
+        </div>
+        <div class="date-selector-group">
+            <label for="month-select">Месяц:</label>
+            <select id="month-select"></select>
+        </div>
+        <div id="current-date-display">Сентябрь 1939</div> <!-- Для отображения текущей даты -->
+    </div>
+
+    <div id="app-container">
+        <aside id="info-area">
+            <header>
+                <h1>ВМВ: Хроники</h1>
+            </header>
+            <div id="event-details-panel">
+                <img id="event-info-image" src="" alt="" class="hidden">
+                <h2 id="event-info-title">Выберите событие на карте или дату</h2>
+                <p id="event-info-date"></p>
+                <p id="event-info-description"></p>
+            </div>
+            <button id="reset-map-btn" class="hidden">Сбросить выбор события</button>
+        </aside>
+
+        <main id="map-area">
+            <div id="map-container">  <!-- Внешний контейнер для центрирования и ограничения -->
+                <div id="world-map-image-wrapper"> <!-- Контейнер с фиксированным соотношением сторон -->
+                    <img src="assets/ww2_flag_map.png" alt="Карта мира Второй Мировой Войны" id="world-map-bg">
+                    <svg id="lines-svg"></svg> <!-- Убраны width/height, будут 100% от родителя -->
+                    <div id="events-layer">
+                        <!-- Маркеры событий -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="tooltip" class="hidden"></div>
+
+    <script src="events.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

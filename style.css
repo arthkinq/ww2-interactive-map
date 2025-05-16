@@ -1,0 +1,320 @@
+/* style.css */
+body {
+    font-family: 'EB Garamond', serif;
+    background-color: #3E3E3E;
+    color: #EAE0C8;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#timeline-controls-container {
+    width: 100%;
+    padding: 12px 20px;
+    background-color: #2a231d;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    border-bottom: 2px solid #4A4034;
+    z-index: 20;
+}
+
+.date-selector-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.date-selector-group label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.1em;
+    color: #EAE0C8;
+}
+
+.date-selector-group select {
+    font-family: 'Oswald', sans-serif;
+    background-color: #EAE0C8;
+    color: #4A4034;
+    border: 1px solid #6B5E51;
+    padding: 6px 10px;
+    border-radius: 3px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+#current-date-display {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.3em;
+    color: #FFBF00;
+    min-width: 180px;
+    text-align: left;
+    font-weight: bold;
+}
+
+#app-container {
+    display: flex;
+    width: 100%;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+#info-area {
+    width: 30%;
+    min-width: 320px;
+    height: 100%;
+    background-color: #4A4034;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    border-right: 5px solid #2a231d;
+    box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+    z-index: 10;
+}
+
+#info-area header h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.2em;
+    margin: 0 0 20px 0;
+    border-bottom: 1px solid #6B5E51;
+    padding-bottom: 10px;
+    color: #EBDCB2;
+    text-align: center;
+}
+
+#event-details-panel { flex-grow: 1; }
+#event-info-image {
+    width: 100%;
+    max-height: 220px;
+    object-fit: cover;
+    border: 3px solid #6B5E51;
+    margin-bottom: 15px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+#event-info-image.hidden { display: none; }
+#event-info-title {
+    font-family: 'Oswald', sans-serif;
+    margin-top: 0;
+    color: #FFBF00;
+    font-size: 1.6em;
+}
+#event-info-date {
+    font-size: 0.9em;
+    font-family: 'Anonymous Pro', monospace;
+    color: #C8BBAF;
+    margin-bottom: 10px;
+}
+#event-info-description {
+    font-family: 'EB Garamond', serif;
+    font-size: 1em;
+    line-height: 1.6;
+}
+#reset-map-btn {
+    font-family: 'Oswald', sans-serif;
+    background-color: #6B5E51;
+    color: #EAE0C8;
+    border: 1px solid #2a231d;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-top: auto;
+    display: block;
+    width: calc(100% - 20px);
+    margin-left: 10px; margin-right: 10px;
+    box-sizing: border-box;
+    text-transform: uppercase;
+}
+#reset-map-btn.hidden { display: none; }
+
+#map-area {
+    width: 70%;
+    height: 100%;
+    position: relative;
+    background-color: #303942;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#map-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#world-map-image-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 2000px;
+}
+#world-map-image-wrapper::before {
+    content: "";
+    display: block;
+    /* ВАЖНО: Это значение должно быть (Высота_вашей_карты_px / Ширина_вашей_карты_px) * 100% */
+    /* Пример для карты 1000px шириной и 570px высотой: (570 / 1000) * 100% = 57% */
+    padding-top: 57%; /* ЗАМЕНИТЕ ЭТО ЗНАЧЕНИЕ НА ВАШЕ! */
+}
+
+#world-map-bg, #events-layer, #lines-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#world-map-bg {
+    object-fit: contain;
+    z-index: 1;
+    filter: sepia(0.3) contrast(1.1) brightness(0.9);
+}
+
+#events-layer { z-index: 3; pointer-events: none;}
+#lines-svg { z-index: 2; pointer-events: none;}
+
+.event-marker {
+    position: absolute;
+    background-color: #f0e6d2;
+    border: 1px solid #4A4034;
+    padding: 8px 8px 20px 8px;
+    box-shadow: 3px 3px 8px rgba(0,0,0,0.4);
+    cursor: pointer;
+    transform-origin: center center;
+    transition: opacity 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    pointer-events: all;
+    width: 80px;
+    z-index: 5;
+}
+.event-marker.polaroid-hidden {
+    opacity: 0;
+    pointer-events: none;
+    z-index: 4;
+}
+.event-marker:hover:not(.polaroid-hidden) {
+    transform: scale(1.1) rotate(-2deg);
+    box-shadow: 5px 5px 12px rgba(0,0,0,0.5);
+    z-index: 6;
+}
+.event-marker-image {
+    width: 100%;
+    height: 60px;
+    object-fit: cover;
+    display: block;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+}
+.event-marker-title {
+    font-family: 'Anonymous Pro', monospace;
+    font-size: 10px;
+    color: #333;
+    text-align: center;
+    line-height: 1.2;
+    overflow: hidden;
+    max-height: 2.4em; /* Примерно 2 строки */
+}
+.event-marker.related-event {
+    padding: 6px 6px 15px 6px;
+    width: 70px;
+}
+.event-marker.related-event .event-marker-image { height: 50px; }
+.event-marker.related-event .event-marker-title { font-size: 9px; }
+
+.event-marker.related-event:hover:not(.polaroid-hidden) {
+     transform: scale(1.05) rotate(1deg);
+}
+.event-marker.hidden {
+    display: none !important;
+}
+.active-event-dot {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background-color: #FFBF00;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #FFBF00, 0 0 5px #000;
+    z-index: 7;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+#tooltip {
+    position: absolute;
+    background-color: rgba(30, 30, 30, 0.95);
+    color: #EAE0C8;
+    padding: 10px 15px;
+    border-radius: 3px;
+    font-family: 'EB Garamond', serif;
+    font-size: 0.95em;
+    z-index: 200;
+    pointer-events: none;
+    max-width: 280px;
+    border: 1px solid #6B5E51;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+#tooltip.hidden { display: none; }
+
+.event-line {
+    stroke: rgba(255, 191, 0, 0.7);
+    stroke-width: 2.5;
+    fill: none;
+    stroke-dasharray: 6, 4;
+    animation: dash-animation 1.5s linear infinite;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+.event-line.visible { opacity: 1; }
+
+@keyframes dash-animation {
+    to { stroke-dashoffset: -10; }
+}
+
+/* ... (все предыдущие стили) ... */
+
+/* Новый стиль для компактной точки, когда Полароиды слишком близко */
+.compact-dot-marker {
+    width: 20px !important; /* Фиксированный размер для точки */
+    height: 20px !important;
+    padding: 0 !important; /* Убираем padding от Полароида */
+    background-color: #A0522D !important; /* Sienna - другой цвет, чем у active-dot */
+    border: 2px solid #f0e6d2 !important; /* Светлая обводка */
+    border-radius: 50% !important;
+    box-shadow: 0 0 6px rgba(0,0,0,0.7) !important;
+    /* Центрируем точку относительно ее координат (left, top) */
+    transform: translate(-50%, -50%) !important;
+    /* Убедимся, что ховер-эффекты Полароида не применяются */
+    transition: opacity 0.3s ease, background-color 0.2s ease, border-color 0.2s ease !important;
+}
+
+.compact-dot-marker:hover {
+    background-color: #B87333 !important; /* Немного светлее при наведении */
+    transform: translate(-50%, -50%) scale(1.1) !important; /* Небольшое увеличение */
+    box-shadow: 0 0 8px rgba(0,0,0,0.8) !important;
+}
+
+/* Скрываем внутренности Полароида, когда он становится компактной точкой */
+.compact-dot-marker .event-marker-image,
+.compact-dot-marker .event-marker-title {
+    display: none !important;
+}
+
+/* Убедимся, что активная точка не становится компактной */
+.active-event-dot.compact-dot-marker {
+    /* Переопределяем на стили active-event-dot, если вдруг класс добавился */
+    width: 18px !important;
+    height: 18px !important;
+    background-color: #FFBF00 !important;
+    border: 2px solid #fff !important;
+    box-shadow: 0 0 10px #FFBF00, 0 0 5px #000 !important;
+}
+
+
+/* ... (остальные стили: #tooltip, .event-line, @keyframes) ... */
